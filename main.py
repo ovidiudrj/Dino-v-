@@ -1,5 +1,7 @@
 import pygame
 pygame.init()
+import random
+from obstacle import Obstacle
 
 screen = pygame.display.set_mode((1280, 720))
 pygame.display.set_caption("Dino(v)")
@@ -18,16 +20,17 @@ dino = pygame.transform.scale(dino, (135, 145))
 pygame.mixer.music.load("sfx/collisionSound.wav")
 font = pygame.font.Font("font/PressStart2P.ttf", 20)
 
-cactus_x = 1280
+score = 0
+
 cactus_speed = 7
 
-score = 0
+Obstacle_list = [Obstacle(1280, 487, 50 , 50), Obstacle(2000, 487, 40 , 40)]
 
 GameState= "menu"
 
 def reset():
-    global cactus_x, cactus_speed, score
-    cactus_x = 1280
+    global  Obstacle_list, cactus_speed, score
+    Obstacle_list = [Obstacle(1280, 487, 50, 50), Obstacle(2000, 487, 40 , 40)]
     cactus_speed = 7
     score = 0
 
@@ -53,13 +56,28 @@ while running:
                     GameState = "playing"
 
     if GameState == "playing":
-        cactus_x -= cactus_speed
-        cactus_speed += 0.01
         text = font.render("Score: " + str(int(score)), True, (0, 0, 0))
 
-        if cactus_x < 0:
-            cactus_x = 1280
-            score += 1
+        cactus_speed += 0.01
+
+        dino_rect = pygame.Rect(x + 30, y + 20, 135 - 60, 145 - 30)
+        screen.fill((255, 255, 255))
+        screen.blit(text, (15, 15))
+        screen.blit(dino, (x, y))
+
+        for obs in Obstacle_list:
+            obs.update(cactus_speed)
+
+            if obs.x < 0:
+                obs.x = 1280 + random.randint(0, 600)
+                score += 1
+
+            obs.draw(screen)
+
+            if dino_rect.colliderect(obs.get_rect()):
+                pygame.mixer.music.play()
+                print("Game Over")
+                GameState = "game over"
 
         velocity_y += 0.8
         y += velocity_y
@@ -67,18 +85,6 @@ while running:
         if y > 400:
             jumping = False
             y = 400
-
-        screen.fill((255, 255, 255))
-        screen.blit(text, (15, 15))
-        dino_rect = pygame.Rect(x + 30, y + 20, 135 - 60, 145 - 30)
-        cactus = pygame.draw.rect(screen, (0, 0, 0), (cactus_x, 487, 50, 50))
-
-        if dino_rect.colliderect(cactus):
-            pygame.mixer.music.play()
-            print("Game Over")
-            GameState = "game over"
-
-        screen.blit(dino, (x, y))
 
     if GameState == "game over":
         text = font.render("Game Over, press R to restart", True, (0, 0, 0))
