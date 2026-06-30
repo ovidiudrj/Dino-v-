@@ -12,11 +12,11 @@ velocity_y = 0
 
 jumping = False
 
-dino = pygame.image.load("dino.png").convert_alpha()
+dino = pygame.image.load("assets/dino.png").convert_alpha()
 dino = pygame.transform.scale(dino, (135, 145))
 
-pygame.mixer.music.load("collisionSound.wav")
-font = pygame.font.Font("PressStart2P.ttf", 20)
+pygame.mixer.music.load("sfx/collisionSound.wav")
+font = pygame.font.Font("font/PressStart2P.ttf", 20)
 
 cactus_x = 1280
 cactus_speed = 7
