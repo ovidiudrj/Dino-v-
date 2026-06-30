@@ -12,7 +12,7 @@ velocity_y = 0
 
 jumping = False
 
-dino = pygame.image.load("assets/dino.png").convert_alpha()
+dino = pygame.image.load("assets/dino_no_bg.png").convert_alpha()
 dino = pygame.transform.scale(dino, (135, 145))
 
 pygame.mixer.music.load("sfx/collisionSound.wav")
@@ -22,9 +22,14 @@ cactus_x = 1280
 cactus_speed = 7
 
 score = 0
-Game_over = False
 
 GameState= "menu"
+
+def reset():
+    global cactus_x, cactus_speed, score
+    cactus_x = 1280
+    cactus_speed = 7
+    score = 0
 
 while running:
     for event in pygame.event.get():
@@ -40,6 +45,7 @@ while running:
         if GameState == "game over":
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_r:
+                    reset()
                     GameState = "playing"
         if GameState == "menu":
             if event.type == pygame.KEYDOWN:
@@ -64,17 +70,13 @@ while running:
 
         screen.fill((255, 255, 255))
         screen.blit(text, (15, 15))
-        dino_rect = pygame.Rect(x, y, 135, 145)
+        dino_rect = pygame.Rect(x + 30, y + 20, 135 - 60, 145 - 30)
         cactus = pygame.draw.rect(screen, (0, 0, 0), (cactus_x, 487, 50, 50))
 
         if dino_rect.colliderect(cactus):
             pygame.mixer.music.play()
-            Game_over = True
-            score = 0
-            GameState = "game over"
             print("Game Over")
-            cactus_x = 1280
-            cactus_speed = 7
+            GameState = "game over"
 
         screen.blit(dino, (x, y))
 
