@@ -24,20 +24,31 @@ cactus_speed = 7
 score = 0
 Game_over = False
 
-GameState= "playing"
+GameState= "menu"
 
 while running:
-    if GameState == "playing":
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        if GameState == "playing":
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE and not jumping:
                     velocity_y = -18
                     jumping = True
+                if event.key == pygame.K_s:
+                    velocity_y += 12
+        if GameState == "game over":
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_r:
+                    GameState = "playing"
+        if GameState == "menu":
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    GameState = "playing"
 
+    if GameState == "playing":
         cactus_x -= cactus_speed
-
+        cactus_speed += 0.01
         text = font.render("Score: " + str(int(score)), True, (0, 0, 0))
 
         if cactus_x < 0:
@@ -63,21 +74,21 @@ while running:
             GameState = "game over"
             print("Game Over")
             cactus_x = 1280
+            cactus_speed = 7
 
         screen.blit(dino, (x, y))
-        pygame.display.flip()
-        clock.tick(60)
 
     if GameState == "game over":
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            if event.type ==pygame.KEYDOWN:
-                if event.key == pygame.K_r:
-                    GameState = "playing"
         text = font.render("Game Over, press R to restart", True, (0, 0, 0))
-        screen.blit(text, (380, 340 ))
-        pygame.display.flip()
-        clock.tick(60)
+        screen.blit(text, (350,  220))
+
+    if GameState == "menu":
+        screen.fill((255, 255, 255))
+        text = font.render("Press SPACE to start", True, (0, 0, 0))
+        screen.blit(text, (425, 340 ))
+
+    pygame.display.flip()
+    clock.tick(60)
+
 
 
