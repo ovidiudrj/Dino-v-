@@ -1,0 +1,12 @@
+#character constants
+CHARACTER_WIDTH = 135
+CHARACTER_HEIGHT = 145
+CHARACTER_X= 100
+CHARACTER_Y= 400
+
+#game constants
+GRAVITY = 0.8
+GROUND_Y = 400
+
+#cactus constants
+CACTUS_SPEED = 7
