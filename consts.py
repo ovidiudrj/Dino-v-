@@ -10,6 +10,7 @@ GROUND_Y = 400
 
 #cactus consts
 CACTUS_SPEED = 7
+MAX_SPEED = 16
 
 #path consts
 JUMP_SOUND_PATH = "sfx/Dino_Jump_Sound.wav"

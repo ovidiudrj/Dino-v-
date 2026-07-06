@@ -78,7 +78,7 @@ while running:
         text = font.render("Score: " + str(int(score)), True, (0, 0, 0))
         screen.blit(text, (20, 20))
 
-        cactus_speed += 0.005
+        cactus_speed = min(cactus_speed + 0.005, MAX_SPEED)
 
         dino.draw(screen)
 
