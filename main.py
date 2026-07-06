@@ -24,8 +24,7 @@ score = 0
 dino = Character(CHARACTER_X, CHARACTER_Y, CHARACTER_WIDTH, CHARACTER_HEIGHT)
 
 #OBSTACLES
-obstacle_list = [Obstacle(1280, GROUND_Y + CHARACTER_HEIGHT - 100 , 60, 135),
-                 Obstacle(2000, GROUND_Y + CHARACTER_HEIGHT - 108, 60 , 135)]
+obstacle_list = []
 
 cactus_speed = CACTUS_SPEED
 
@@ -38,14 +37,14 @@ game_state= GameState.MENU
 
 def reset():
     global  obstacle_list, cactus_speed, score, dino
-    obstacle_list = [Obstacle(1280, GROUND_Y + CHARACTER_HEIGHT - 100 , 60, 135),
-                 Obstacle(2000, GROUND_Y + CHARACTER_HEIGHT - 108, 60 , 135)]
+    obstacle_list = []
     cactus_speed = CACTUS_SPEED
     score = 0
     dino.alive= True
 
 #3f3f3f
 bg_x = 0
+next_gap = 600
 running = True
 
 while running:
@@ -83,20 +82,23 @@ while running:
 
         dino.draw(screen)
 
+        if len(obstacle_list) == 0 or obstacle_list[-1].x < 1280 - next_gap:
+            obstacle_list.append(Obstacle(1280, random.choice(CACTUS_TYPES)))
+            next_gap = 400 + cactus_speed * 17 + random.randint(0, 250)
+
         for obs in obstacle_list:
             obs.update(cactus_speed)
-
-            if obs.x + obs.width < 0:
-                max_right = max( o.x for o in obstacle_list)
-                obs.x = max_right+ 200 + random.randint(0, 600) if max_right > 1280 else 1280
-                score += 1
-
             obs.draw(screen)
 
             if dino.get_rect().colliderect(obs.get_rect()):
                 dino.collision_sound.play()
                 dino.alive = False
                 game_state = GameState.GAME_OVER
+
+        for obs in obstacle_list:
+            if obs.x + obs.width < 0:
+                score += 1
+        obstacle_list = [o for o in obstacle_list if o.x + o.width > 0]
 
         dino.update()
 

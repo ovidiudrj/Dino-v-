@@ -26,7 +26,7 @@ class Character:
         if self.jumping: return
 
         self.jumping = True
-        self.velocity_y = - 18
+        self.velocity_y = - 20
 
     def update(self):
         self.velocity_y += GRAVITY
