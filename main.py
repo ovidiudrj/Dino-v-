@@ -41,6 +41,7 @@ def reset():
     cactus_speed = CACTUS_SPEED
     score = 0
     dino.alive= True
+    dino.ducking = False
 
 #3f3f3f
 bg_x = 0
@@ -56,8 +57,13 @@ while running:
                 if event.key == pygame.K_SPACE and not dino.jumping:
                     dino.jump_sound.play()
                     dino.jump()
-                if event.key == pygame.K_s:
+                if event.key == pygame.K_s and dino.jumping:
                     dino.fast_fall()
+                if event.key == pygame.K_s and not dino.jumping:
+                    dino.duck()
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_s:
+                    dino.unduck()
         if game_state == GameState.GAME_OVER:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_r:
@@ -91,8 +97,7 @@ while running:
             obs.draw(screen)
 
             if dino.get_rect().colliderect(obs.get_rect()):
-                dino.collision_sound.play()
-                dino.alive = False
+                dino.die()
                 game_state = GameState.GAME_OVER
 
         for obs in obstacle_list:
