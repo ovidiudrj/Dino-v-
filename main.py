@@ -24,7 +24,7 @@ score = 0
 dino = Character(CHARACTER_X, CHARACTER_Y, CHARACTER_WIDTH, CHARACTER_HEIGHT)
 
 #OBSTACLES
-obstacle_list = []
+obstacle_group = pygame.sprite.Group()
 
 cactus_speed = CACTUS_SPEED
 
@@ -36,8 +36,8 @@ class GameState(Enum):
 game_state= GameState.MENU
 
 def reset():
-    global  obstacle_list, cactus_speed, score, dino
-    obstacle_list = []
+    global  obstacle_group, cactus_speed, score, dino
+    obstacle_group.empty()
     cactus_speed = CACTUS_SPEED
     score = 0
     dino.alive= True
@@ -79,6 +79,8 @@ while running:
 
     if game_state != GameState.GAME_OVER:
         bg_x -= 0.3
+        if bg_x <= -1280:
+            bg_x = 0
 
     if game_state == GameState.PLAYING:
         text = font.render("Score: " + str(int(score)), True, (0, 0, 0))
@@ -88,22 +90,20 @@ while running:
 
         dino.draw(screen)
 
-        if len(obstacle_list) == 0 or obstacle_list[-1].x < 1280 - next_gap:
-            obstacle_list.append(Obstacle(1280, random.choice(CACTUS_TYPES)))
+        if len(obstacle_group) == 0 or obstacle_group.sprites()[-1].rect.x < 1280 - next_gap:
+            obstacle_group.add(Obstacle(1280, random.choice(CACTUS_TYPES)))
             next_gap = 400 + cactus_speed * 17 + random.randint(0, 250)
 
-        for obs in obstacle_list:
-            obs.update(cactus_speed)
-            obs.draw(screen)
+        obstacle_group.update(cactus_speed)
+        obstacle_group.draw(screen)
 
-            if dino.get_rect().colliderect(obs.get_rect()):
+        for obs in obstacle_group:
+            if dino.get_rect().colliderect(obs.rect):
                 dino.die()
                 game_state = GameState.GAME_OVER
-
-        for obs in obstacle_list:
-            if obs.x + obs.width < 0:
+            if obs.rect.right < 0:
                 score += 1
-        obstacle_list = [o for o in obstacle_list if o.x + o.width > 0]
+                obs.kill()
 
         dino.update()
 
