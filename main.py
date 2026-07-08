@@ -19,6 +19,19 @@ font = pygame.font.Font(FONT_PATH, 20)
 background = pygame.image.load("assets/Dino_Background.png").convert_alpha()
 background = pygame.transform.scale(background, (1280, 720))
 background2 = background.copy()
+
+def load_high_score():
+    try:
+        with open("highscore.txt", "r") as f:
+            return int(f.read())
+    except (FileNotFoundError, ValueError):
+        return 0
+
+def save_high_score(value):
+    with open("highscore.txt", "w") as f:
+        f.write(str(value))
+
+high_score = load_high_score()
 score = 0
 
 #DINO
@@ -107,6 +120,9 @@ while running:
             if dino.get_rect().colliderect(obs.rect):
                 dino.die()
                 game_state = GameState.GAME_OVER
+                if score > high_score:
+                    high_score = int(score)
+                    save_high_score(high_score)
             if obs.rect.right < 0:
                 score += 1
                 obs.kill()
@@ -121,6 +137,8 @@ while running:
     if game_state == GameState.MENU:
         text = font.render("PRESS SPACE TO START", True, (0, 0, 0))
         screen.blit(text, (425, 305 ))
+        high_sc = font.render("HIGH SCORE: " + str(high_score), True, (0, 0, 0))
+        screen.blit(high_sc, (480, 260))
 
     pygame.display.flip()
     clock.tick(60)
