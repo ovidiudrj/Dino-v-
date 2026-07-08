@@ -4,6 +4,7 @@ from   consts    import *
 from   obstacle  import Obstacle
 from   character import Character
 from   enum      import Enum, auto
+from   ptero     import Ptero
 
 #WINDOW
 pygame.init()
@@ -42,6 +43,8 @@ def reset():
     score = 0
     dino.alive= True
     dino.ducking = False
+    dino.jumping = False
+    dino.velocity_y = 0
 
 #3f3f3f
 bg_x = 0
@@ -91,7 +94,10 @@ while running:
         dino.draw(screen)
 
         if len(obstacle_group) == 0 or obstacle_group.sprites()[-1].rect.x < 1280 - next_gap:
-            obstacle_group.add(Obstacle(1280, random.choice(CACTUS_TYPES)))
+            if random.random() < 0.5:
+                obstacle_group.add(Obstacle(1280, random.choice(CACTUS_TYPES)))
+            else:
+                obstacle_group.add(Ptero(1280))
             next_gap = 400 + cactus_speed * 17 + random.randint(0, 250)
 
         obstacle_group.update(cactus_speed)

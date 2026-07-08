@@ -15,7 +15,6 @@ MAX_SPEED = 23
 #path consts
 JUMP_SOUND_PATH = "sfx/Dino_Jump_Sound.wav"
 COLLISION_SOUND_PATH = "sfx/Dino_Collision_Sound.wav"
-GAME_OVER_SOUND_PATH = "sfx/Dino_Game_Over_Sound.wav"
 FONT_PATH = "font/PressStart2P.ttf"
 
 #obstacle consts

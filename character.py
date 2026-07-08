@@ -44,7 +44,7 @@ class Character:
 
     def get_rect(self):
         if self.ducking:
-            return pygame.Rect(self.x + 30, self.y + 20, self.width +10, self.height)
+            return pygame.Rect(self.x + 30, self.y + 50, self.width, 70)
         return pygame.Rect(self.x + 30, self.y + 20, self.width - 60, self.height - 30)
 
     def fast_fall(self):
