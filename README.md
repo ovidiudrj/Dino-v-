@@ -12,6 +12,6 @@ A Chrome Dino clone I built to learn game development fundamentals with Python a
 - **S** — duck (or fast-fall while in the air)
 - **R** — restart after game over
 
-## Running it
+## How to run 
 
 You'll need Python and Pygame: pip install pygame + python main.py
