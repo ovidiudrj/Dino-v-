@@ -137,7 +137,7 @@ while running:
     if game_state == GameState.MENU:
         text = font.render("PRESS SPACE TO START", True, (0, 0, 0))
         screen.blit(text, (425, 305 ))
-        high_sc = font.render("HIGH SCORE: " + str(high_score), True, (0, 0, 0))
+        high_sc = font.render("HIGH SCORE: " + str(high_score), True, (40, 40, 40))
         screen.blit(high_sc, (480, 260))
 
     pygame.display.flip()
