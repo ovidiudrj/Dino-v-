@@ -2,7 +2,9 @@
 
 A Chrome Dino clone I built to learn game development fundamentals with Python and Pygame.
 
-![Gameplay](assets/demo.gif)
+<p align="center">
+  <img src="assets/demo.gif" alt="Gameplay">
+</p>
 
 ## Controls
 
