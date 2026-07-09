@@ -1,4 +1,4 @@
-# Dino(v)
+# :t-rex:Dino(v) 
 
 A Chrome Dino clone I built to learn game development fundamentals with Python and Pygame.
 
